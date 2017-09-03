@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="appModule">
+<head>
+    <meta charset="UTF-8">
+    <title>书店</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<div class="navbar navbar-inverse">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <a href="#!/home" class="navbar-brand">书店</a>
+        </div>
+        <div>
+            <ul class="navbar-nav nav">
+                <li><a href="#!/home">首页</a></li>
+                <li><a href="#!/list">列表页</a></li>
+                <li><a href="#!/add">添加页</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-bottom: 60px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-view></div>
+        </div>
+    </div>
+</div>
+<!--display:flex;flex-direction;align-item:center;justify-content;-->
+<div class="navbar navbar-inverse navbar-fixed-bottom text-center" style="color: white;line-height: 50px">
+    &copy;内容版权均归 小火车 所有
+</div>
+<script src="node_modules/jquery/dist/jquery.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script src="node_modules/angular/angular.js"></script>
+<script src="node_modules/angular-resource/angular-resource.js"></script>
+<script src="node_modules/angular-route/angular-route.js"></script>
+<script src="js/controller.js"></script>
+<script>
+
+    var app = angular.module('appModule',['ngResource','ngRoute','appModule.controller']);
+
+
+    app.factory('Book',function ($resource) {
+        return $resource('/book/:bid',null,{
+            update:{method:'PUT'}
+        })
+    });
+
+
+
+    app.config(['$routeProvider',function ($routeProvider) {
+        $routeProvider.when('/home',{
+            templateUrl:'tmpl/home.html',
+            controller:'homeCtrl'
+        }).when('/add',{
+            templateUrl:'tmpl/add.html',
+            controller:'addCtrl'
+        }).when('/list',{
+            templateUrl:'tmpl/list.html',
+            controller:'listCtrl'
+
+        }).when('/detail/:bid',{
+            templateUrl:'tmpl/detail.html',
+            controller:'detailCtrl'
+        }).otherwise('/home');
+    }]);
+</script>
+</body>
+</html>
